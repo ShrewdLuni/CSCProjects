@@ -4,7 +4,6 @@ D:\Code\School\CS\HomeWork1\bin\Debug\net6.0-windows\HomeWork1.runtimeconfig.jso
 D:\Code\School\CS\HomeWork1\bin\Debug\net6.0-windows\HomeWork1.dll
 D:\Code\School\CS\HomeWork1\bin\Debug\net6.0-windows\HomeWork1.pdb
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.csproj.AssemblyReference.cache
-D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.Form1.resources
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.csproj.GenerateResource.cache
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.GeneratedMSBuildEditorConfig.editorconfig
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.AssemblyInfoInputs.cache
@@ -15,3 +14,4 @@ D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\refint\HomeWork1.dll
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.pdb
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.genruntimeconfig.cache
 D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\ref\HomeWork1.dll
+D:\Code\School\CS\HomeWork1\obj\Debug\net6.0-windows\HomeWork1.Form1.resources
