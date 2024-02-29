@@ -43,9 +43,39 @@ namespace HomeWork1
             }
             catch (Exception)
             {
+                MessageBox.Show(Catalan(7).ToString());
                 MessageBox.Show("Something went wrong");
             }
+        }
 
+        private double Catalan(long n)
+        {
+            n--;
+            return (Convert.ToDouble(Factorial(2 * n))) / (Convert.ToDouble(Factorial(n + 1)) * Convert.ToDouble(Factorial(n)));
+        }
+
+        private void Farey(int n,bool direction)
+        {
+            int a = 1;
+            int b = 1;
+            int c = n - 1;
+            int d = n;
+            if (direction)
+            {
+                a = 0;
+                b = 1;
+                c = 1;
+                d = n;
+            }
+            string text = string.Format("{0}/{1}", a, b);
+            MessageBox.Show(text);
+            while ((direction && c <= n) || (!direction && a > 0))
+            {
+                int k = (n + b) / d;
+                (a, b, c, d) = (c, d, k * c - a, k * d - b);
+                text = string.Format("{0}/{1}", a, b);
+                MessageBox.Show(text);
+            }
         }
 
         private double TrapezoidalRule(double a, double b, Func<double, double> Function)
