@@ -9,21 +9,16 @@ namespace Matrix // Note: actual namespace depends on the project name.
         public static int tempHeight = 0;
         static void Main(string[] args)
         {
-            while (true)
-            {
-                try
-                {
-                    SetUpApp();
-                    isRandom = Console.ReadLine().ToLower() == "random";
-                    int[,] input = GetInput(isRandom, 2, 5);
-                    RenderRestult(MatrixMultiplication(ConvertMatrix(GenerateMatrix(input[0, 0], input[0, 1], isRandom)), ConvertMatrix(GenerateMatrix(input[1, 0], input[1, 1], isRandom))));
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("Something went wrong press enter to restart");
-                    Console.ReadLine();
-                }
-            }
+            //linq hw
+            var random = new Random();
+            int n = random.Next(0,1000);
+            int[] arr = new int[n];
+            for (int i = 0; i < n; i++)
+                arr[i] = random.Next(-10000,10000);
+
+
+            foreach (var item in from x in arr.Select(x => Math.Abs(x)).Distinct() where x > arr.Min() && x < arr.Max() && (x % 2 != 0 && x % 3 != 0 && x % 5 != 0)  orderby x ascending select x )
+                Console.WriteLine(item);
         }
 
         static void SetUpApp()
