@@ -121,7 +121,6 @@ namespace HomeWork1
                 else
                     Dots.Add(new int[] { Convert.ToInt32(x * 300 / (b - a)), Convert.ToInt32((y + 1) * 100 + 4), 0 });//info for drawing dots
 
-
                 SinValues.Add(new int[] { Convert.ToInt32(x * 300 / (b - a)), Convert.ToInt32(sinValue * 100) + 104 });//info for drawing sin
                 CosValues.Add(new int[] { Convert.ToInt32(x * 300 / (b - a)), Convert.ToInt32(cosValue * 100) + 104 });//info for drawing cos
             });
@@ -192,21 +191,34 @@ namespace HomeWork1
             pictureBox1.Image = null;
             pictureBox1.Image = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             var collections = new List<int[]>[] { SinValues, CosValues };
-            var brush = Brushes.Red;
+            var cos = Brushes.White;
+            var sin = Brushes.White;
+            var inside = Brushes.Green;
+            var outside = Brushes.Indigo;
+
+            var currentFunction = false;
+
+            int limit = 5000;
+            int count = 0;
+
             foreach (var list in collections)
             {
+                count = 0;
                 foreach (var item in list)
                 {
+                    count++;
+                    if (count > limit)
+                        break;
                     if (item == null)
                         continue;
                     visited.Add(item[0] + " " + item[1]);
                     using (var g = Graphics.FromImage(pictureBox1.Image))
                     {
-                        g.FillRectangle(brush, item[0], item[1], 3, 3); //drawing point 
+                        g.FillRectangle(currentFunction ? sin : cos, item[0], item[1], 3, 3); //drawing point 
                         pictureBox1.Refresh();
                     }
                 }
-                brush = Brushes.DeepSkyBlue;
+                currentFunction = true;
             }
             foreach (var item in Dots)
             {
@@ -214,9 +226,28 @@ namespace HomeWork1
                     continue;
                 using (var g = Graphics.FromImage(pictureBox1.Image))
                 {
-                    g.FillRectangle(item[2] == 1 ? Brushes.Green : Brushes.Indigo, item[0], item[1], 1, 1); //drawing point 
+                    g.FillRectangle(item[2] == 1 ? inside : outside, item[0], item[1], 1, 1);//drawing point 
                     pictureBox1.Refresh();
                 }
+            }
+            foreach (var list in collections)
+            {
+                count = 0;
+                foreach (var item in list)
+                {
+                    count++;
+                    if (count > limit)
+                        break;
+                    if (item == null)
+                        continue;
+                    visited.Add(item[0] + " " + item[1]);
+                    using (var g = Graphics.FromImage(pictureBox1.Image))
+                    {
+                        g.FillRectangle(currentFunction ? sin : cos, item[0], item[1], 3, 3); //drawing point 
+                        pictureBox1.Refresh();
+                    }
+                }
+                currentFunction = true;
             }
             SinValues.Clear();
             CosValues.Clear();
