@@ -9,16 +9,34 @@ namespace Matrix // Note: actual namespace depends on the project name.
         public static int tempHeight = 0;
         static void Main(string[] args)
         {
-            //linq hw
-            var random = new Random();
-            int n = random.Next(0,1000);
-            int[] arr = new int[n];
-            for (int i = 0; i < n; i++)
-                arr[i] = random.Next(-10000,10000);
+            while (true)
+            {
+                try
+                {
+                    SetUpApp();
+                    isRandom = Console.ReadLine().ToLower() == "random";
+                    int[,] input = GetInput(isRandom, 2, 5);
+                    RenderRestult(MatrixMultiplication(ConvertMatrix(GenerateMatrix(input[0, 0], input[0, 1], isRandom)), ConvertMatrix(GenerateMatrix(input[1, 0], input[1, 1], isRandom))));
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Something went wrong press enter to restart");
+                }
+            }
+        }
 
-
-            foreach (var item in from x in arr.Select(x => Math.Abs(x)).Distinct() where x > arr.Min() && x < arr.Max() && (x % 2 != 0 && x % 3 != 0 && x % 5 != 0)  orderby x ascending select x )
-                Console.WriteLine(item);
+        static int[,] MatrixMultiplication(int[,] matrixOne, int[,] matrixTwo)
+        {
+            int[,] resultMatrix = new int[matrixOne.GetLength(0), matrixOne.GetLength(1)];
+            for (int i = 0; i < resultMatrix.GetLength(0); i++)
+            {
+                for (int j = 0; j < matrixOne.GetLength(1); j++)
+                {
+                    for (int c = 0; c < matrixOne.GetLength(1); c++)
+                        resultMatrix[i, j] += matrixOne[i, c] * matrixTwo[c, j];
+                }
+            }
+            return resultMatrix;
         }
 
         static void SetUpApp()
@@ -56,7 +74,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             return new int[,] {{ heightOne, widthOne }, { heightTwo, widthTwo }};
         }
 
-        static void RenderRestult(int[][] matrix)
+        static void RenderRestult(int[,] matrix)
         {
             Console.WriteLine("Result:");
             Console.WriteLine(RenderMatrix(matrix));
@@ -64,44 +82,41 @@ namespace Matrix // Note: actual namespace depends on the project name.
             Console.ReadLine();
         }
 
-        static int[][] ConvertMatrix(string[][] matrix)
+        static int[,] ConvertMatrix(string[,] matrix)
         {
-            int[][] convertedMatrix = new int[matrix.Length][];
-            for (int i = 0; i < matrix.Length; i++)
+            int[,] convertedMatrix = new int[matrix.GetLength(0), matrix.GetLength(1)];
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                convertedMatrix[i] = new int[matrix[0].Length];
-                for (int j = 0; j < matrix[0].Length; j++)
-                    convertedMatrix[i][j] = Convert.ToInt32(matrix[i][j] == "x" ? -9999 : matrix[i][j]);
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    convertedMatrix[i, j] = Convert.ToInt32(matrix[i, j] == "x" ? -9999 : matrix[i, j]);
             }
             return convertedMatrix;
         }
 
-        static string[][] GenerateMatrix(int a,int b,bool isRandom)
+        static string[,] GenerateMatrix(int a,int b,bool isRandom)
         {
             var random = new Random();
-            string[][] matrix = new string[a][];
-            for (int i = 0; i < a; i++)
-                matrix[i] = new string[b];
-            for (int i = 0; i < matrix.Length; i++)
+            string[,] matrix = new string[a,b];
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix[0].Length; j++)
-                    matrix[i][j] = random.Next(10).ToString();
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    matrix[i,j] = random.Next(10).ToString();
             }
             Console.WriteLine((!secondMatrix ? "First" : "Second") +" matrix:");
             if (!isRandom)
             {
-                for (int i = 0; i < matrix.Length; i++)
+                for (int i = 0; i < matrix.GetLength(0); i++)
                 {
-                    for (int j = 0; j < matrix[0].Length; j++)
-                        matrix[i][j] = "0";
+                    for (int j = 0; j < matrix.GetLength(1); j++)
+                        matrix[i,j] = "0";
                 }
-                for (int i = 0; i < matrix.Length; i++)
+                for (int i = 0; i < matrix.GetLength(0); i++)
                 {
-                    for (int j = 0; j < matrix[0].Length; j++)
+                    for (int j = 0; j < matrix.GetLength(1); j++)
                     {
-                        matrix[i][j] = "x";
+                        matrix[i, j] = "x";
                         WriteMatrix(matrix);
-                        matrix[i][j] = Convert.ToInt32(Console.ReadLine()).ToString();
+                        matrix[i, j] = Convert.ToInt32(Console.ReadLine()).ToString();
                     }
                 }
             }
@@ -110,39 +125,23 @@ namespace Matrix // Note: actual namespace depends on the project name.
             return matrix;
         }
 
-        static void WriteMatrix(string[][] matrix)
+        static void WriteMatrix(string[,] matrix)
         {
             int cursorLevel = isRandom ? 4 : 11;
             Console.SetCursorPosition(0, !secondMatrix ? cursorLevel : cursorLevel + 2 + tempHeight);
             Console.WriteLine(RenderMatrix(ConvertMatrix(matrix)));
         }
 
-        static string RenderMatrix(int[][] matrix)
+        static string RenderMatrix(int[,] matrix)
         {
             string result = "";
-            for (int i = 0; i < matrix.Length; i++)
+            for (int i = 0; i < matrix.GetLength(0); i++)
             {
-                for (int j = 0; j < matrix[0].Length; j++)
-                    result += (matrix[i][j] != -9999 ? matrix[i][j] : "x") + " ";
+                for (int j = 0; j < matrix.GetLength(1); j++)
+                    result += (matrix[i,j] != -9999 ? matrix[i,j] : "x") + " ";
                 result += "\n";
             }
             return result;
-        }
-
-        static int[][] MatrixMultiplication(int[][] matrixOne, int[][] matrixTwo)
-        {
-            int[][] resultMatrix = new int[matrixOne.Length][];
-            for (int i = 0; i < matrixOne.Length; i++)
-                resultMatrix[i] = new int[matrixTwo[0].Length];
-            for (int i = 0; i < resultMatrix.Length; i++)
-            {
-                for (int j = 0; j < resultMatrix[0].Length; j++)
-                {
-                    for (int c = 0; c < matrixOne[0].Length; c++)
-                        resultMatrix[i][j] += matrixOne[i][c] * matrixTwo[c][j];
-                }
-            }
-            return resultMatrix;
         }
     }
 }
