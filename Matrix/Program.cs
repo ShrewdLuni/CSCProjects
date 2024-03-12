@@ -12,14 +12,8 @@ namespace Matrix // Note: actual namespace depends on the project name.
         {
             while (true)
             {
-                try
-                {
                     Run();
-                }
-                catch (Exception error)
-                {
-                    HandleError(error);
-                }
+
             }
         }
 
@@ -33,28 +27,50 @@ namespace Matrix // Note: actual namespace depends on the project name.
 
             var watch = new System.Diagnostics.Stopwatch();
             long timeDefault = 0;
-            long timeParallel = 0;
+            long timeParallelOneLoop = 0;
+            long timeParallelTwoLoops = 0;
+            long timeIsSame = 0;
 
-            int[,] input = GetInput(500, 1000);
+            int[,] input = GetInput(100, 200);
             long[,] a = GenerateMatrix(input[0, 0], input[0, 1]);
             long[,] b = GenerateMatrix(input[1, 0], input[1, 1]);
             
             watch.Start();
-            var result = MatrixMultiplication(a, b);
+            long[,] resultDefault = MatrixMultiplication(a, b);
             watch.Stop();
             timeDefault = watch.ElapsedMilliseconds;
 
             watch.Restart();
-            MatrixMultiplicationParallel(a, b);
+            long[,] resultOneLoop = MatrixMultiplicationParallelOneLoop(a, b);
             watch.Stop();
-            timeParallel = watch.ElapsedMilliseconds;
-            
+            timeParallelOneLoop = watch.ElapsedMilliseconds;
+
+            watch.Restart();
+            long[,] resultTwoLoops = MatrixMultiplicationParallelTwoLoops(a, b);
+            watch.Stop();
+            timeParallelTwoLoops = watch.ElapsedMilliseconds;
+
+            bool IsSame = true;
 
             if (!isRandom)
-                RenderMatrix(result,true);
+            {
+                RenderMatrix(resultDefault, true);
+                RenderMatrix(resultOneLoop, true);
+                RenderMatrix(resultTwoLoops, true);
+            }
+            else
+            {
+                watch.Restart();
+                IsSame = (IsSameMatrix(resultDefault, resultOneLoop) && IsSameMatrix(resultOneLoop, resultTwoLoops));
+                watch.Stop();
+                timeIsSame = watch.ElapsedMilliseconds;
+            }
 
             Console.WriteLine($"Default Method Execution Time: {timeDefault} ms");
-            Console.WriteLine($"Parallel Method Execution Time: {timeParallel} ms");
+            Console.WriteLine($"One Parallel Loop Method Execution Time: {timeParallelOneLoop} ms");
+            Console.WriteLine($"Two Parallel Loops Method Execution Time: {timeParallelTwoLoops} ms");
+            Console.WriteLine($"IsSame Method Execution Time: {timeIsSame} ms\n");
+            Console.WriteLine(IsSame ? "Answers of all Methods are same" : "Answers of all Methods are not same(not valid)");
             Console.WriteLine("\nPress enter to restart...");
             Console.ReadLine();
         }
@@ -73,7 +89,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             return resultMatrix;
         }
 
-        static long[,] MatrixMultiplicationParallel(long[,] matrixOne, long[,] matrixTwo)
+        static long[,] MatrixMultiplicationParallelOneLoop(long[,] matrixOne, long[,] matrixTwo)
         {
             long[,] resultMatrix = new long[matrixOne.GetLength(0), matrixTwo.GetLength(1)];
             Parallel.For(0, resultMatrix.GetLength(0), (i) =>
@@ -83,6 +99,20 @@ namespace Matrix // Note: actual namespace depends on the project name.
                     for (int c = 0; c < matrixOne.GetLength(1); c++)
                         resultMatrix[i, j] += matrixOne[i, c] * matrixTwo[c, j];
                 }
+            });
+            return resultMatrix;
+        }
+
+        static long[,] MatrixMultiplicationParallelTwoLoops(long[,] matrixOne, long[,] matrixTwo)
+        {
+            long[,] resultMatrix = new long[matrixOne.GetLength(0), matrixTwo.GetLength(1)];
+            Parallel.For(0, resultMatrix.GetLength(0), (i) =>
+            {
+                Parallel.For(0, resultMatrix.GetLength(1), (j) =>
+                {
+                    for (int c = 0; c < matrixOne.GetLength(1); c++)
+                        resultMatrix[i, j] += matrixOne[i, c] * matrixTwo[c, j];
+                });
             });
             return resultMatrix;
         }
@@ -127,6 +157,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             long[,] matrix = new long[a, b];
             if (!isRandom)
             {
+
                 for (int i = 0; i < matrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < matrix.GetLength(1); j++)
@@ -140,6 +171,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             }
             else
             {
+                var watch = new System.Diagnostics.Stopwatch();
                 for (int i = 0; i < matrix.GetLength(0); i++)
                 {
                     for (int j = 0; j < matrix.GetLength(1); j++)
@@ -149,7 +181,6 @@ namespace Matrix // Note: actual namespace depends on the project name.
             secondMatrix = true;
             return matrix;
         }
-
         static void RenderMatrix(long[,] matrix,bool isResult = false)
         {
             if (!isResult)
@@ -166,6 +197,21 @@ namespace Matrix // Note: actual namespace depends on the project name.
                 result += "\n";
             }
             Console.WriteLine((isResult ? "Result:\n": "") + result);
+        }
+
+        static bool IsSameMatrix(long[,] a, long[,] b)
+        {
+            if ((a.GetLength(0) != b.GetLength(0)) || (a.GetLength(1) != b.GetLength(1)))
+                return false;
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                {
+                    if (a[i, j] != b[i, j])
+                        return false;
+                }
+            }
+            return true;
         }
         
         static void HandleError(Exception error)
