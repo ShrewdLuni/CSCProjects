@@ -12,8 +12,10 @@ namespace Matrix // Note: actual namespace depends on the project name.
         {
             while (true)
             {
+                try
                     Run();
-
+                catch (Exception error)
+                    HandleError(error);
             }
         }
 
@@ -193,7 +195,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             for (long i = 0; i < matrix.GetLength(0); i++)
             {
                 for (long j = 0; j < matrix.GetLength(1); j++)
-                    result += (matrix[i,j] != -99999999999999 ? matrix[i,j] : "x") + " ";
+                    result += (matrix[i, j] != -99999999999999 ? matrix[i, j] : "x") + " ";
                 result += "\n";
             }
             Console.WriteLine((isResult ? "Result:\n": "") + result);
