@@ -2,6 +2,13 @@
 
 namespace Matrix // Note: actual namespace depends on the project name.
 {
+    public static class ConcurrentRandom
+    {
+        [ThreadStatic]
+        private static Random? _local;
+
+        public static Random Instance => _local ??= new Random();
+    }
     internal class Program
     {
         public static bool isRandom = false;
@@ -13,9 +20,14 @@ namespace Matrix // Note: actual namespace depends on the project name.
             while (true)
             {
                 try
+                {
                     Run();
+
+                }
                 catch (Exception error)
+                {
                     HandleError(error);
+                }
             }
         }
 
@@ -33,11 +45,17 @@ namespace Matrix // Note: actual namespace depends on the project name.
             long timeParallelTwoLoops = 0;
             long timeIsSame = 0;
 
-            int[,] input = GetInput(100, 200);
-            long[,] a = GenerateMatrix(input[0, 0], input[0, 1]);
-            long[,] b = GenerateMatrix(input[1, 0], input[1, 1]);
-            
+            int[,] input = GetInput(3000, 4000);
+            bool parallelGeneration = true;
+
             watch.Start();
+            long[,] a = GenerateMatrix(input[0, 0], input[0, 1], parallelGeneration);
+            long[,] b = GenerateMatrix(input[1, 0], input[1, 1], parallelGeneration);
+            watch.Stop();
+            Console.WriteLine($"Matrix Generation Method Execution Time: {watch.ElapsedMilliseconds}ms\n");
+
+
+            watch.Restart();
             long[,] resultDefault = MatrixMultiplication(a, b);
             watch.Stop();
             timeDefault = watch.ElapsedMilliseconds;
@@ -153,7 +171,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             return new int[,] {{ heightOne, widthOne }, { heightTwo, widthTwo }};
         }
 
-        static long[,] GenerateMatrix(int a,int b)
+        static long[,] GenerateMatrix(int a, int b, bool parallel = false)
         {
             var random = new Random();
             long[,] matrix = new long[a, b];
@@ -173,16 +191,27 @@ namespace Matrix // Note: actual namespace depends on the project name.
             }
             else
             {
-                var watch = new System.Diagnostics.Stopwatch();
-                for (int i = 0; i < matrix.GetLength(0); i++)
+                if (parallel)
                 {
-                    for (int j = 0; j < matrix.GetLength(1); j++)
-                        matrix[i, j] = random.NextInt64(long.MinValue, long.MaxValue);
+                    Parallel.For(0, matrix.GetLength(0), (i) =>
+                    {
+                        for (int j = 0; j < matrix.GetLength(1); j++)
+                            matrix[i, j] = ConcurrentRandom.Instance.NextInt64(long.MinValue, long.MaxValue);
+                    });
+                }
+                else
+                {
+                    for (int i = 0; i < matrix.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < matrix.GetLength(1); j++)
+                            matrix[i, j] = random.NextInt64(long.MinValue, long.MaxValue);
+                    }
                 }
             }
             secondMatrix = true;
             return matrix;
         }
+
         static void RenderMatrix(long[,] matrix,bool isResult = false)
         {
             if (!isResult)
