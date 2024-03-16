@@ -1,0 +1,17 @@
+D:\Code\School\CS\MonteCarlo\bin\Debug\net6.0-windows\MonteCarlo.exe
+D:\Code\School\CS\MonteCarlo\bin\Debug\net6.0-windows\MonteCarlo.deps.json
+D:\Code\School\CS\MonteCarlo\bin\Debug\net6.0-windows\MonteCarlo.runtimeconfig.json
+D:\Code\School\CS\MonteCarlo\bin\Debug\net6.0-windows\MonteCarlo.dll
+D:\Code\School\CS\MonteCarlo\bin\Debug\net6.0-windows\MonteCarlo.pdb
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.csproj.AssemblyReference.cache
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.Form1.resources
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.csproj.GenerateResource.cache
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.AssemblyInfoInputs.cache
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.AssemblyInfo.cs
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.csproj.CoreCompileInputs.cache
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.dll
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\refint\MonteCarlo.dll
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.pdb
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\MonteCarlo.genruntimeconfig.cache
+D:\Code\School\CS\MonteCarlo\obj\Debug\net6.0-windows\ref\MonteCarlo.dll
