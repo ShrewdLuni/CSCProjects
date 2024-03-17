@@ -25,18 +25,11 @@ namespace MonteCarlo
         private void button1_Click(object sender, EventArgs e)
         {
 
-            try
-            {
                 double a = Convert.ToDouble(inputA.Text);
                 double b = Convert.ToDouble(inputB.Text);
                 long n = Convert.ToInt64(inputN.Text);
 
                 output.Text = MonteCarloMethod(a, b, n).ToString();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
         }
 
         private double MonteCarloMethod(double a, double b, long limit)
@@ -45,132 +38,49 @@ namespace MonteCarlo
             List<int[]> Values = new List<int[]>();
             List<int[]> Dots = new List<int[]>();
 
-            int count = 0;
+            double count = 0;
+
             double w = b - a;
             double h = Math.Sinh(b) - Math.Sinh(a);
-            for (int i = 0; i < limit + 1; i++)
-            {
-                double x = ConcurrentRandom.Instance.NextDouble();
-                double y = ConcurrentRandom.Instance.NextDouble();
 
-                y = b - (y * w);
-                x = x * ConcurrentRandom.Instance.Next(Convert.ToInt32(a), Convert.ToInt32(b));
-                double value = Math.Sinh(x);
-                bool check = x <= value;
-                if (check)
-                    count++;
 
-                //Dots.Add(new int[] { Convert.ToInt32(x * Convert.ToDouble(image.Height)), Convert.ToInt32(y * Convert.ToDouble(image.Width)), check ? 1 : 0 });
-                Values.Add(new int[] { Convert.ToInt32(x * Convert.ToDouble(image.Height)), Convert.ToInt32(value * Convert.ToDouble(image.Width))});
-            }
-            label1.Text = $"{Math.Sinh(-2)}\n{Math.Sinh(-1)}\n{Math.Sinh(0)}\n{Math.Sinh(1)}\n{Math.Sinh(2)}";
-            VisualizeMonteCarlo(Values, Dots, Default);
-            return Math.Round(w * h * (count / Convert.ToDouble(limit)),4);
-        }
-
-        private void VisualizeMonteCarlo(List<int[]> Values, List<int[]> Dots, ConcurrentBag<int[]> Default)
-        {
             image.Image = null;
             image.Image = new Bitmap(image.Width, image.Height);
 
-            var values = Brushes.White;
-            var inside = Brushes.Green;
-            var outside = Brushes.Indigo;
 
-            foreach (var item in Default)
+            for (double i = 0; i < limit; i++)
             {
-                if (item == null)
-                    continue;
+                var one = ConcurrentRandom.Instance.NextDouble();
+                var two = ConcurrentRandom.Instance.NextDouble();
+
+                var x = b - (one * w);//a - b -> 0 - 1
+                var y = Math.Sinh(b) - (two * h);//Sinh(a) - Sinh(b)
+                var value = Math.Sinh(x);
+                if (y <= value)
+                {
+                    count++;
+                    using (var g = Graphics.FromImage(image.Image))
+                    {
+                        g.FillRectangle(Brushes.Indigo, Convert.ToInt32(((w - (one * w))/w) * image.Width), image.Height - Convert.ToInt32(((h - (two * h)) / h) * image.Height), 3, 3);
+                        image.Refresh();
+                    }
+                }
+                else
+                {
+                    using (var g = Graphics.FromImage(image.Image))
+                    {
+                        g.FillRectangle(Brushes.Green, Convert.ToInt32(((w - (one * w)) / w) * image.Width), image.Height - Convert.ToInt32(((h - (two * h)) / h) * image.Height), 3, 3);
+                        image.Refresh();
+                    }
+                }
                 using (var g = Graphics.FromImage(image.Image))
                 {
-                    g.FillRectangle(Brushes.Red, item[0], item[1], 3, 3);//drawing point 
+                    g.FillRectangle(Brushes.Red, Convert.ToInt32(((w - (one * w)) / w) * image.Width), Convert.ToInt32(((h - ((value / Math.Sinh(b)) * h)) / h) * image.Height) / 2, 3, 3);
                     image.Refresh();
                 }
+
             }
-
-            foreach (var item in Values)
-            {
-                if (item == null)
-                    continue;
-                using (var g = Graphics.FromImage(image.Image))
-                {
-                    g.FillRectangle(values, item[0], item[1], 1, 1);//drawing point 
-                    image.Refresh();
-                }
-            }
-            foreach (var item in Dots)
-            {
-                if (item == null)
-                    continue;
-                using (var g = Graphics.FromImage(image.Image))
-                {
-                    g.FillRectangle(item[2] == 1 ? inside : outside, item[0], item[1], 1, 1);//drawing point 
-                    image.Refresh();
-                }
-            }
-
-
-
-
-
-
-
-            //var currentFunction = false;
-
-            //int limit = 5000;
-            //int count = 0;
-
-            //foreach (var list in collections)
-            //{
-            //    count = 0;
-            //    foreach (var item in list)
-            //    {
-            //        count++;
-            //        if (count > limit)
-            //            break;
-            //        if (item == null)
-            //            continue;
-            //        visited.Add(item[0] + " " + item[1]);
-            //        using (var g = Graphics.FromImage(pictureBox1.Image))
-            //        {
-            //            g.FillRectangle(currentFunction ? sin : cos, item[0], item[1], 3, 3); //drawing point 
-            //            pictureBox1.Refresh();
-            //        }
-            //    }
-            //    currentFunction = true;
-            //}
-            //foreach (var item in Dots)
-            //{
-            //    if (item == null || visited.Contains(item[0] + " " + item[1]))
-            //        continue;
-            //    using (var g = Graphics.FromImage(pictureBox1.Image))
-            //    {
-            //        g.FillRectangle(item[2] == 1 ? inside : outside, item[0], item[1], 1, 1);//drawing point 
-            //        pictureBox1.Refresh();
-            //    }
-            //}
-            //foreach (var list in collections)
-            //{
-            //    count = 0;
-            //    foreach (var item in list)
-            //    {
-            //        count++;
-            //        if (count > limit)
-            //            break;
-            //        if (item == null)
-            //            continue;
-            //        visited.Add(item[0] + " " + item[1]);
-            //        using (var g = Graphics.FromImage(pictureBox1.Image))
-            //        {
-            //            g.FillRectangle(currentFunction ? sin : cos, item[0], item[1], 3, 3); //drawing point 
-            //            pictureBox1.Refresh();
-            //        }
-            //    }
-            //    currentFunction = true;
-            //}
-            //SinValues.Clear();
-            //CosValues.Clear();
-            //Dots.Clear();
+            return ((w * h) * (count / Convert.ToDouble(limit)));
         }
 
     }
@@ -182,3 +92,26 @@ namespace MonteCarlo
         public static Random Instance => _local ??= new Random();
     }
 }
+
+
+//for (double i = -5; i < 5; i += 0.01)
+//{
+//    var x = Convert.ToInt32((image.Width / 2) + i * (image.Width) / 5);
+//    var y = Convert.ToInt32((image.Height / 2) - Math.Sinh(i) * (image.Height) / 5);
+//    using (var g = Graphics.FromImage(image.Image))
+//    {
+//        g.FillRectangle(Brushes.White, x, image.Height / 2, 2, 2);
+//        g.FillRectangle(Brushes.White, image.Width / 2, y, 2, 2);
+//        g.FillRectangle(Brushes.Red, x, y, 3, 3);//drawing point 
+//        image.Refresh();
+//    }
+//}
+
+//else
+//{
+//    using (var g = Graphics.FromImage(image.Image))
+//    {
+//        g.FillRectangle(Brushes.Green, Convert.ToInt32((image.Width / 2) + x * (image.Width) / (b - a) / 5), Convert.ToInt32((image.Height / 2) - y * (image.Height) / (b - a) / 5), 2, 2);
+//        image.Refresh();
+//    }
+//}
