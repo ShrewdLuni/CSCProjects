@@ -22,7 +22,7 @@ namespace MonteCarlo
             InitializeComponent();
         }
         public Graphics graphics { get; set; }
-        public List<int[]> Dots = new List<int[]>();
+        public ConcurrentBag<int[]> Dots = new ConcurrentBag<int[]>();
         private void button1_Click(object sender, EventArgs e)
         {
             image.Image = null;
@@ -45,23 +45,28 @@ namespace MonteCarlo
             double h = Math.Sinh(b) - Math.Sinh(a);
             Parallel.For(0, limit, (i) =>
             {
-                double one = ConcurrentRandom.Instance.NextDouble();
-                double two = ConcurrentRandom.Instance.NextDouble();
+                double one = ConcurrentRandom.Instance.NextDouble() * w;
+                double two = ConcurrentRandom.Instance.NextDouble() * h;
 
-                double x = b - (one * w);
-                double y = Math.Sinh(b) - (two * h);
+                double x = b - one;
+                double y = Math.Sinh(b) - two;
                 double value = Math.Sinh(x);
-                count += y <= value ? 1 : 0;
-
-                Dots.Add(new int[] { Convert.ToInt32(((w - (one * w)) / w) * image.Width), image.Height - Convert.ToInt32(((h - (two * h)) / h) * image.Height), y <= value ? 1 : 0 });
+                //y < value => count++
+                Dots.Add(new int[] { Convert.ToInt32(((w - one) / w) * image.Width), image.Height - Convert.ToInt32(((h - two) / h) * image.Height), y <= value ? 1 : 0});
             });
-            return ((w * h) * (count / Convert.ToDouble(limit)));
+            count = Dots.Where(item => item[2] == 1).Count();
+            return Math.Round((w * h) * (count / limit), 3);
         }
 
         private void Draw()
         {
             foreach(var item in Dots.Where(x => x != null))
-                graphics.FillRectangle(item[2] == 1 ? Brushes.Indigo : Brushes.Green, item[0], item[1], 1, 1);
+                graphics.FillRectangle(item[2] == 1 ? Brushes.Indigo : Brushes.LightGreen, item[0], item[1], 1, 1);
+        }
+
+        private void output_Click(object sender, EventArgs e)
+        {
+
         }
     }
     public static class ConcurrentRandom

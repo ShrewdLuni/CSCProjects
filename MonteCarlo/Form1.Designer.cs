@@ -33,7 +33,6 @@
             this.inputB = new System.Windows.Forms.TextBox();
             this.output = new System.Windows.Forms.Label();
             this.inputN = new System.Windows.Forms.TextBox();
-            this.label1 = new System.Windows.Forms.Label();
             this.image = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.image)).BeginInit();
             this.SuspendLayout();
@@ -68,6 +67,7 @@
             // output
             // 
             this.output.AutoSize = true;
+            this.output.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.output.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.output.Location = new System.Drawing.Point(13, 206);
             this.output.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
@@ -75,6 +75,7 @@
             this.output.Size = new System.Drawing.Size(45, 20);
             this.output.TabIndex = 3;
             this.output.Text = "none";
+            this.output.Click += new System.EventHandler(this.output_Click);
             // 
             // inputN
             // 
@@ -83,17 +84,6 @@
             this.inputN.Name = "inputN";
             this.inputN.Size = new System.Drawing.Size(116, 23);
             this.inputN.TabIndex = 4;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12.36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(13, 247);
-            this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(45, 20);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "none";
             // 
             // image
             // 
@@ -108,9 +98,9 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.ClientSize = new System.Drawing.Size(933, 519);
             this.Controls.Add(this.image);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.inputN);
             this.Controls.Add(this.output);
             this.Controls.Add(this.inputB);
