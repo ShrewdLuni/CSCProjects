@@ -42,7 +42,7 @@ namespace MonteCarlo
         {
             double count = 0;
             double w = b - a;
-            double h = Math.Sinh(b);
+            double h = Math.Sinh(b) - Math.Sinh(a);
             Parallel.For(0, limit, (i) =>
             {
                 double one = ConcurrentRandom.Instance.NextDouble() * w;

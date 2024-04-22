@@ -1,0 +1,15 @@
+D:\Code\School\CS\subway\bin\Debug\net6.0\subway.exe
+D:\Code\School\CS\subway\bin\Debug\net6.0\subway.deps.json
+D:\Code\School\CS\subway\bin\Debug\net6.0\subway.runtimeconfig.json
+D:\Code\School\CS\subway\bin\Debug\net6.0\subway.dll
+D:\Code\School\CS\subway\bin\Debug\net6.0\subway.pdb
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.csproj.AssemblyReference.cache
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.GeneratedMSBuildEditorConfig.editorconfig
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.AssemblyInfoInputs.cache
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.AssemblyInfo.cs
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.csproj.CoreCompileInputs.cache
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.dll
+D:\Code\School\CS\subway\obj\Debug\net6.0\refint\subway.dll
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.pdb
+D:\Code\School\CS\subway\obj\Debug\net6.0\subway.genruntimeconfig.cache
+D:\Code\School\CS\subway\obj\Debug\net6.0\ref\subway.dll
