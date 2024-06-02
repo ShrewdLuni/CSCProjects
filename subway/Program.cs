@@ -19,17 +19,8 @@ abstract class CGraphicsObject
     }
 }
 
-interface ITriangle
-{
-    double CalculateArea();
-}
 
-interface IHexagon
-{
-    double CalculateArea();
-}
-
-class Triangle : CGraphicsObject, ITriangle
+class Triangle : CGraphicsObject
 {
     public double SideA { get; set; }
     public double SideB { get; set; }
@@ -61,7 +52,7 @@ class Triangle : CGraphicsObject, ITriangle
     }
 }
 
-class Hexagon : CGraphicsObject, IHexagon
+class Hexagon : CGraphicsObject
 {
     public double Side { get; set; }
 
