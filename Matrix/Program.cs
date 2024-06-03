@@ -22,7 +22,6 @@ namespace Matrix // Note: actual namespace depends on the project name.
                 try
                 {
                     Run();
-
                 }
                 catch (Exception error)
                 {
@@ -45,7 +44,7 @@ namespace Matrix // Note: actual namespace depends on the project name.
             long timeParallelTwoLoops = 0;
             long timeIsSame = 0;
 
-            int[,] input = GetInput(3000, 4000);
+            int[,] input = GetInput(10000, 100000);
             bool parallelGeneration = true;
 
             watch.Start();
