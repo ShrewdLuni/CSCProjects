@@ -78,3 +78,30 @@ class Hexagon : CGraphicsObject
         Console.WriteLine("Hexagon was removed from memory");
     }
 }
+
+class Circle : CGraphicsObject
+{
+    public double Radius { get; set; }
+
+    public Circle(double r)
+    {
+        this.Radius = r;
+    }
+
+    public override void Show()
+    {
+        Console.WriteLine("Side Length: {0}", this.Radius);
+    }
+
+    public double CalculateArea()
+    {
+        return Math.PI * Math.Pow(Radius, 2);
+    }
+
+    public delegate double AreaDelegate();
+
+    ~Circle()
+    {
+        Console.WriteLine("Circle was removed from memory");
+    }
+}
