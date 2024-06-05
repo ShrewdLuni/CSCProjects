@@ -138,10 +138,26 @@ namespace Matrix // Note: actual namespace depends on the project name.
 
         static int[,] GetInput(int min = 2,int max = 5)
         {
+            var userInput = Console.ReadLine().ToLower();
+
+            switch (userInput)
+            {
+                case "stop":
+                    isRandom = false
+                    break;
+                case "random":
+                    isRandom = true;
+                    break;
+                default:
+                    isRandom = false;
+            }
+
+
             isRandom = Console.ReadLine().ToLower() == "random";
 
             int heightOne = random.Next(min, max);
             int widthOne = random.Next(min, max);
+
             int heightTwo = widthOne;
             int widthTwo = random.Next(min, max);
 
