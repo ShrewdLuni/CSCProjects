@@ -15,6 +15,9 @@ namespace Matrix // Note: actual namespace depends on the project name.
         public static bool secondMatrix = false;
         public static int tempHeight = 0;
         public static Random random = new Random();
+
+        public static bool stop = false;
+
         static void Main(string[] args)
         {
             while (true)
@@ -143,15 +146,14 @@ namespace Matrix // Note: actual namespace depends on the project name.
             switch (userInput)
             {
                 case "stop":
-                    isRandom = false
+                    isRandom = false;
                     break;
                 case "random":
                     isRandom = true;
                     break;
                 default:
-                    isRandom = false;
+                    break;
             }
-
 
             isRandom = Console.ReadLine().ToLower() == "random";
 
